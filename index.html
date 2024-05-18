@@ -8,7 +8,10 @@
 <body>
     <h1>Usuários</h1>
     <button id="load-users">Carregar Usuários</button>
+    <input type="text" placeholder="Adicione um novo usuário" id="insert-user-input">
+    <button id="insert-user-btn">Adicionar</button>
     <ul id="user-list"></ul>
+
 
     <script>
         $(document).ready(function(){
@@ -25,6 +28,17 @@
                     }
                 });
             });
+            $('#insert-user-btn').click(function(){
+                const inputValue = $('#insert-user-input').val();
+                $.ajax({
+                    url: 'insert-api.php',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        name: inputValue
+                    }
+                })
+            })
         });
     </script>
 </body>

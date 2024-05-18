@@ -22,6 +22,10 @@ if ($result->num_rows > 0) {
     }
 } 
 
+// Configurar o cabeçalho para indicar que estamos respondendo com JSON
+header('Content-Type: application/json');
+
+// Enviar a resposta JSON de volta para o cliente
 echo json_encode($users);
 
 $conn->close();
