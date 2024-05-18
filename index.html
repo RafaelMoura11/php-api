@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery AJAX com PHP e MySQL</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Usuários</h1>
+    <button id="load-users">Carregar Usuários</button>
+    <ul id="user-list"></ul>
+
+    <script>
+        $(document).ready(function(){
+            $('#load-users').click(function(){
+                $.ajax({
+                    url: 'api.php',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#user-list').empty();
+                        data.forEach(function(user) {
+                            $('#user-list').append('<li>' + user.name + '</li>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
