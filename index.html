@@ -17,7 +17,7 @@
         $(document).ready(function(){
             $('#load-users').click(function(){
                 $.ajax({
-                    url: 'api.php',
+                    url: 'http://localhost:81/api-php/api.php',
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
@@ -31,7 +31,7 @@
             $('#insert-user-btn').click(function(){
                 const inputValue = $('#insert-user-input').val();
                 $.ajax({
-                    url: 'insert-api.php',
+                    url: 'http://localhost:81/api-php/insert-api.php',
                     method: 'POST',
                     dataType: 'json',
                     data: {

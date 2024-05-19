@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -15,7 +18,7 @@ if ($conn->connect_error) {
 $name = $_POST["name"];
 
 $sql = "INSERT INTO users (name) VALUES ('$name')";
-$result = $conn->query($sql);
+$conn->query($sql);
 
 $conn->close();
 ?>
