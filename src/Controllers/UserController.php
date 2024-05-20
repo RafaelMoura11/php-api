@@ -65,9 +65,66 @@ class UserController {
         ], 200);
     }
 
-    public function update(Request $request, Response $response) {}
+    public function update(Request $request, Response $response) {
+        $authorization = $request::authorization();
 
-    public function remove(Request $request, Response $response, array $id) {}
+        $body = $request::body();
+
+        $userService = UserService::update($authorization, $body);
+
+        if (isset($userService['unauthorized'])) {
+            return $response::json([
+                'error'   => true,
+                'success' => false,
+                'message' => $userService['unauthorized']
+            ], 401);
+        }
+
+        if (isset($userService['error'])) {
+            return $response::json([
+                'error'   => true,
+                'success' => false,
+                'message' => $userService['error']
+            ], 400);
+        }
+
+        $response::json([
+            'error'   => false,
+            'success' => true,
+            'message' => $userService
+        ], 200);
+        return;
+    }
+
+    public function remove(Request $request, Response $response, array $id)
+    {
+        $authorization = $request::authorization();
+
+        $userService = UserService::delete($authorization, $id[0]);
+
+        if (isset($userService['unauthorized'])) {
+            return $response::json([
+                'error'   => true,
+                'success' => false,
+                'message' => $userService['unauthorized']
+            ], 401);
+        }
+
+        if (isset($userService['error'])) {
+            return $response::json([
+                'error'   => true,
+                'success' => false,
+                'message' => $userService['error']
+            ], 400);
+        }
+
+        $response::json([
+            'error'   => false,
+            'success' => true,
+            'message' => $userService
+        ], 200);
+        return;
+    }
 }
 
 ?>
