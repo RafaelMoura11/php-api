@@ -8,7 +8,8 @@ class Database {
         $host = 'localhost';
         $db   = 'mydb';
         $charset = 'utf8mb4';
-        $pdo = new PDO("mysql:host=$host;dbname=$db;charset=$charset");
+        $user = 'root';
+        $pdo = new PDO("mysql:host=$host;dbname=$db;charset=$charset", $user);
         return $pdo;
     }
 }
