@@ -26,7 +26,25 @@ class UserController {
         ], 201);
     }
 
-    public function login(Request $request, Response $response) {}
+    public function login(Request $request, Response $response) {
+        $body = $request::body();
+
+        $userService = UserService::auth($body);
+
+        if(isset($userService['error'])) {
+            return $response::json([
+                'error' => true,
+                'success' => false,
+                'data' => $userService
+            ], 400);
+        }
+
+        $response::json([
+            'error' => false,
+            'success' => true,
+            'jwt' => $userService
+        ], 200);
+    }
 
     public function fetch(Request $request, Response $response) {}
 
