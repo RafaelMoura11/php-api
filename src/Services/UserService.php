@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\JWT;
 use App\Models\User;
 use App\Utils\Validator;
 use PDOException;
@@ -43,7 +44,7 @@ class UserService {
 
             if (!$user) return ['error' => 'Sorry, we could not authenticate you.'];
 
-            return $user;
+            return JWT::generate($user);
         }
         catch (PDOException $e) {
             return ['error' => $e->getMessage()];
