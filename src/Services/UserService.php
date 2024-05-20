@@ -92,7 +92,7 @@ class UserService {
         }
     }
 
-    public static function update(mixed $authorization, array $data) {
+    public static function update(mixed $authorization, array $data, int|string $id) {
         try {
             if (isset($authorization['error'])) return ['unauthorized' => $authorization['error']];
 
@@ -104,7 +104,7 @@ class UserService {
                 'name' => $data['name'] ?? ''
             ]);
 
-            $user = User::update($userFromJWT['id'], $fields);
+            $user = User::update($id, $fields);
 
             if (!$user) return ['error'=> 'Sorry, we could not update your account.'];
 

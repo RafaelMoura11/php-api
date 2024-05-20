@@ -100,12 +100,12 @@ class UserController {
         ], 200);
     }
 
-    public function update(Request $request, Response $response) {
+    public function update(Request $request, Response $response, array $id) {
         $authorization = $request::authorization();
 
         $body = $request::body();
 
-        $userService = UserService::update($authorization, $body);
+        $userService = UserService::update($authorization, $body, $id[0]);
 
         if (isset($userService['unauthorized'])) {
             return $response::json([
