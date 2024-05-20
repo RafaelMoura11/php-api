@@ -4,15 +4,25 @@ namespace App\Controllers;
 
 use App\Http\Request;
 use App\Http\Response;
+use App\Services\UserService;
 
 class UserController {
     public function store(Request $request, Response $response) {
         $body = $request::body();
+        $userService = UserService::create($body);
+
+        if(isset($userService['error'])) {
+            return $response::json([
+                'error' => true,
+                'success' => false,
+                'data' => $userService
+            ], 400);
+        }
 
         $response::json([
             'error' => false,
             'success' => true,
-            'data' => $body
+            'data' => $userService
         ], 201);
     }
 
