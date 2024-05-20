@@ -46,7 +46,24 @@ class UserController {
         ], 200);
     }
 
-    public function fetch(Request $request, Response $response) {}
+    public function fetch(Request $request, Response $response) {
+        $authorization = $request::authorization();
+        $userService = UserService::fetch($authorization);
+
+        if(isset($userService['error'])) {
+            return $response::json([
+                'error' => true,
+                'success' => false,
+                'data' => $userService
+            ], 400);
+        }
+
+        $response::json([
+            'error' => false,
+            'success' => true,
+            'data' => $userService
+        ], 200);
+    }
 
     public function update(Request $request, Response $response) {}
 

@@ -53,6 +53,25 @@ class UserService {
             return ['error' => $e->getMessage()];
         }
     }
+
+    public static function fetch(mixed $authorization) {
+        try {
+            if (isset($authorization['error'])) return ['error' => $authorization['error']];
+
+            $userFromJWT = JWT::verify($authorization);
+
+            if (!$userFromJWT) return ['error' => "Please, login to access this resource."];
+
+            $user = User::findAll();
+            return $user;
+        }
+        catch (PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+        catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
 }
 
 ?>
