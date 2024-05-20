@@ -56,7 +56,7 @@ class UserService {
 
     public static function fetch(mixed $authorization) {
         try {
-            if (isset($authorization['unauthorized'])) return ['error' => $authorization['error']];
+            if (isset($authorization['error'])) return ['unauthorized' => $authorization['error']];
 
             $userFromJWT = JWT::verify($authorization);
 
@@ -73,11 +73,28 @@ class UserService {
         }
     }
 
+    public static function fetchById(mixed $authorization, int|string $id) {
+        try {
+            if (isset($authorization['error'])) return ['unauthorized' => $authorization['error']];
+
+            $userFromJWT = JWT::verify($authorization);
+
+            if (!$userFromJWT) return ['error' => "Please, login to access this resource."];
+
+            $user = User::findById($id);
+            return $user;
+        }
+        catch (PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+        catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
     public static function update(mixed $authorization, array $data) {
         try {
-            if (isset($authorization['error'])) {
-                return ['unauthorized'=> $authorization['error']];
-            }
+            if (isset($authorization['error'])) return ['unauthorized' => $authorization['error']];
 
             $userFromJWT = JWT::verify($authorization);
 
@@ -104,9 +121,7 @@ class UserService {
     public static function delete(mixed $authorization, int|string $id)
     {
         try {
-            if (isset($authorization['error'])) {
-                return ['unauthorized'=> $authorization['error']];
-            }
+            if (isset($authorization['error'])) return ['unauthorized' => $authorization['error']];
 
             $userFromJWT = JWT::verify($authorization);
 

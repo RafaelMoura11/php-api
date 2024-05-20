@@ -65,6 +65,23 @@ class User extends Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function findById(int|string $id) {
+        $pdo = self::getConnection();
+
+        $stmt = $pdo->prepare('
+            SELECT 
+                id, name, email
+            FROM 
+                users
+            WHERE
+                id = ?
+        ');
+
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public static function update(int|string $id, array $data) {
         $pdo = self::getConnection();
         

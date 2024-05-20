@@ -19,7 +19,7 @@ class UserController {
             ], 400);
         }
 
-        $response::json([
+        return $response::json([
             'error' => false,
             'success' => true,
             'data' => $userService
@@ -39,7 +39,7 @@ class UserController {
             ], 400);
         }
 
-        $response::json([
+        return $response::json([
             'error' => false,
             'success' => true,
             'jwt' => $userService
@@ -50,6 +50,14 @@ class UserController {
         $authorization = $request::authorization();
         $userService = UserService::fetch($authorization);
 
+        if (isset($userService['unauthorized'])) {
+            return $response::json([
+                'error'   => true,
+                'success' => false,
+                'message' => $userService['unauthorized']
+            ], 401);
+        }
+
         if(isset($userService['error'])) {
             return $response::json([
                 'error' => true,
@@ -58,7 +66,34 @@ class UserController {
             ], 400);
         }
 
-        $response::json([
+        return $response::json([
+            'error' => false,
+            'success' => true,
+            'data' => $userService
+        ], 200);
+    }
+
+    public function fetchById(Request $request, Response $response, array $id) {
+        $authorization = $request::authorization();
+        $userService = UserService::fetchById($authorization, $id[0]);
+
+        if (isset($userService['unauthorized'])) {
+            return $response::json([
+                'error'   => true,
+                'success' => false,
+                'message' => $userService['unauthorized']
+            ], 401);
+        }
+
+        if(isset($userService['error'])) {
+            return $response::json([
+                'error' => true,
+                'success' => false,
+                'data' => $userService
+            ], 400);
+        }
+
+        return $response::json([
             'error' => false,
             'success' => true,
             'data' => $userService
@@ -88,12 +123,11 @@ class UserController {
             ], 400);
         }
 
-        $response::json([
+        return $response::json([
             'error'   => false,
             'success' => true,
             'message' => $userService
         ], 200);
-        return;
     }
 
     public function remove(Request $request, Response $response, array $id)
@@ -118,12 +152,11 @@ class UserController {
             ], 400);
         }
 
-        $response::json([
+        return $response::json([
             'error'   => false,
             'success' => true,
             'message' => $userService
         ], 200);
-        return;
     }
 }
 
