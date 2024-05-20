@@ -23,8 +23,7 @@ class User extends Database {
         return $pdo->lastInsertId() > 0 ? true : false;
     }
 
-    public static function authentication(array $data)
-    {
+    public static function authentication(array $data) {
         $pdo = self::getConnection();
 
         $stmt = $pdo->prepare("
@@ -49,6 +48,21 @@ class User extends Database {
             'name' => $user['name'],
             'email'=> $user['email'],
         ];
+    }
+
+    public static function findAll() {
+        $pdo = self::getConnection();
+
+        $stmt = $pdo->prepare('
+            SELECT 
+                id, name, email
+            FROM 
+                users
+        ');
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 
