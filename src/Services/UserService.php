@@ -31,6 +31,27 @@ class UserService {
             return ['error' => $e->getMessage()];
         }
     }
+
+    public static function auth(array $data) {
+        try {
+            $fields = Validator::validate([
+                'email'     => $data['email'] ?? '',
+                'password'  => $data['password'] ?? ''
+            ]);
+
+            $user = User::authentication($fields);
+
+            if (!$user) return ['error' => 'Sorry, we could not authenticate you.'];
+
+            return $user;
+        }
+        catch (PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+        catch (\Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
 }
 
 ?>
