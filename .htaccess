@@ -1,6 +1,14 @@
+# Ativa o mecanismo de reescrita do Apache
 RewriteEngine On
 
+# Condição de reescrita 1: Se a solicitação não for um diretório existente
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f 
 
+# Condição de reescrita 2: Se a solicitação não for um arquivo existente
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Regra de reescrita: Redireciona todas as solicitações para index.php, passando o URL solicitado como um parâmetro 'url'
+# ^(.*)$ captura toda a URL solicitada
+# index.php?url=$1 reescreve a URL, passando a captura (o que foi solicitado) como o valor do parâmetro 'url'
+# [QSA] (Query String Append) preserva a query string original na nova URL
 RewriteRule ^(.*)$ index.php?url=$1 [QSA]
